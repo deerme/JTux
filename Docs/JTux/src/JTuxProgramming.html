@@ -1,0 +1,251 @@
+<!-- Copyright 2004 OTP Systems Oy. All rights reserved. -->
+<body>
+    <p>
+        This is the JTux Programming Reference. This document describes the Java API 
+        for Tuxedo provided by JTux.
+    </p>
+    <h3>The JTux API</h3>
+    <p>
+        The JTux API is a direct mapping of the Tuxedo's native C API to Java. The 
+        methods of the <a href="jtux.atmi.ATMI_method_tables.html">jtux.atmi.ATMI</a> class, 
+        for example, are the Java versions of Tuxedo's native ATMI functions. Similary, 
+        the methods of the <a href="jtux.fml32.FML32_method_tables.html">jtux.fml32.FML32</a>
+        class are the Java versions of Tuxedo's native FML32 functions. The different 
+        Tuxedo data structures are also mapped to Java in a straightforward manner, as 
+        shown by, for example, the <a href="jtux.atmi.TPSVCINFO_field_tables.html">jtux.atmi.TPSVCINFO</a>,
+        <a href="jtux.atmi.TPINIT_field_tables.html">jtux.atmi.TPINIT</a> and <a href="jtux.atmi.TPQCTL_field_tables.html">
+            jtux.atmi.TPQCTL</a> class definitions.
+    </p>
+    <h3>Differences with Tuxedo's Native C API</h3>
+    <p>
+        Although the JTux API is mostly similar to Tuxedo's native C API, there are 
+        also some differences. In particular, the following topics deserve special 
+        attention.
+        <dl>
+            <dt><b>Error and event reporting</b></dt>
+            <dd>
+                The JTux API reports errors and events by throwing exceptions. The methods of 
+                the jtux.atmi.ATMI class, for example, throw exceptions of type {@link 
+                jtux.atmi.TPException} and the methods of the jtux.fml32.FML32 class throw 
+                exceptions of type {@link jtux.fml32.FException} to signal the occurrence 
+                of errors and events.
+            </dd>
+            <dt><b>Typed buffer handling</b></dt>
+            <dd>
+                The JTux API uses instances of the java.nio.ByteBuffer class to represent 
+                Tuxedo typed buffers. Special care should be taken that these buffers are 
+                properly cleaned up as they are <em>not</em> managed by the Java garbage 
+                collector.
+            </dd>
+            <dt><b>Passing parameters by reference</b></dt>
+            <dd>
+                The JTux API uses holder classes to allow method parameters to be passed by 
+                reference. These holder classes are defined in the {@link jtux.holders} 
+                package.
+            </dd>
+        </dl>
+    </p>
+    <h3>Sample Applications</h3>
+    <p>
+        The following sample applications are available to get you started developing 
+        your own Tuxedo clients and servers in Java. For instructions on how to compile 
+        and run these samples see the <a href="../JTux_jar.html">JTux.jar</a> and <a href="../JServer.html">
+            JServer</a> manual pages.
+    </p>
+    <table>
+        <col width="30%" />
+        <col width="70%" />
+        <tr>
+            <th>
+                Name</th>
+            <th>
+                Purpose</th>
+        </tr>
+        <tr>
+            <td>
+                <a href="../samples/SimpleServer.html">SimpleServer</a>
+            </td>
+            <td>Shows the basics of writing a Tuxedo server in Java.</td>
+        </tr>
+        <tr>
+            <td>
+                <a href="../samples/SimpleClient.html">SimpleClient</a>
+            </td>
+            <td>Shows the basics of calling a Tuxedo service from Java.</td>
+        </tr>
+        <tr>
+            <td>
+                <a href="../samples/StringUtils.html">StringUtils</a>
+            </td>
+            <td>Utility methods for dealing with Tuxedo STRING buffers in Java.</td>
+        </tr>
+        <tr>
+            <td>
+                <a href="../samples/SimpleAsyncClient.html">SimpleAsyncClient</a>
+            </td>
+            <td>Shows how to call a Tuxedo service asynchronously.</td>
+        </tr>
+        <tr>
+            <td>
+                <a href="../samples/ServerUtils.html">ServerUtils</a>
+            </td>
+            <td>Utility methods for implementing Tuxedo servers in Java.</td>
+        </tr>
+        <tr>
+            <td>
+                <a href="../samples/DownloadServer.html">DownloadServer</a>
+            </td>
+            <td>Shows how to write a conversational server.</td>
+        </tr>
+        <tr>
+            <td>
+                <a href="../samples/DownloadClient.html">DownloadClient</a>
+            </td>
+            <td>Shows how to write a conversational client.</td>
+        </tr>
+        <tr>
+            <td>
+                <a href="../samples/SimpleEnqueuer.html">SimpleEnqueuer</a>
+            </td>
+            <td>Shows how to enqueue a message in Tuxedo/Q queue.</td>
+        </tr>
+        <tr>
+            <td>
+                <a href="../samples/SimpleDequeuer.html">SimpleDequeuer</a>
+            </td>
+            <td>Shows how to dequeue a message from a Tuxedo /Q queue.</td>
+        </tr>
+        <tr>
+            <td>
+                <a href="../samples/UnsolServer.html">UnsolServer</a>
+            </td>
+            <td>Shows how to send unsolicited messages to clients.</td>
+        </tr>
+        <tr>
+            <td>
+                <a href="../samples/UnsolClient.html">UnsolClient</a>
+            </td>
+            <td>Shows how to handle unsolicited messages.</td>
+        </tr>
+        <tr>
+            <td>
+                <a href="../samples/TimePublisher.html">TimePublisher</a>
+            </td>
+            <td>Shows how to post events through the Tuxedo event broker.</td>
+        </tr>
+        <tr>
+            <td>
+                <a href="../samples/SimpleSubscriber.html">SimpleSubscriber</a>
+            </td>
+            <td>Shows how to subscribe to events posted through the Tuxedo event broker.</td>
+        </tr>
+        <tr>
+            <td>
+                <a href="../samples/SimpleFML32Server.html">SimpleFML32Server</a>
+            </td>
+            <td>Shows how to read and write FML32 buffers.</td>
+        </tr>
+        <tr>
+            <td>
+                <a href="../samples/SimpleFML32Client.html">SimpleFML32Client</a>
+            </td>
+            <td>Shows how to read and write FML32 buffers.</td>
+        </tr>
+    </table>
+    <h3>Sample JDBC Application</h3>
+    <p>
+        The following classes illustrate the use of the JTux JDBC API provided by the 
+        {@link jtux.jdbc} package. Together, they form a sample application consisting 
+        of the following two Tuxedo services:
+        <dl>
+            <dt><b>FINDDEPT</b></dt>
+            <dd>
+                Returns the location of a department identified by a department number.</dd>
+            <dt><b>MOVEDEPT</b></dt>
+            <dd>
+                Changes the location of a department identified by a department number.</dd>
+        </dl>
+        For instructions on how to compile and run this sample application see the <a href="../JTux_jar.html">
+            JTux.jar</a>, <a href="../JServer.html">JServer</a> and <a href="../JTMS.html">JTMS</a>
+        manual pages.
+    </p>
+    <table>
+        <col width="30%" />
+        <col width="70%" />
+        <tr>
+            <th>
+                Name</th>
+            <th>
+                Purpose</th>
+        </tr>
+        <tr>
+            <td>
+                <a href="../samples/JDBCService.html">JDBCService</a>
+            </td>
+            <td>Provides the FML field definitions for the FINDDEPT and MOVEDEPT services.</td>
+        </tr>
+        <tr>
+            <td>
+                <a href="../samples/JDBCServer.html">JDBCServer</a>
+            </td>
+            <td>Implements the FINDDEPT and MOVEDEPT services.</td>
+        </tr>
+        <tr>
+            <td>
+                <a href="../samples/JDBCClient.html">JDBCClient</a>
+            </td>
+            <td>Provides methods for invoking the FINDDEPT and MOVEDEPT services.</td>
+        </tr>
+        <tr>
+            <td>
+                <a href="../samples/JDBCException.html">JDBCException</a>
+            </td>
+            <td>Exception class for application level FINDDEPT and MOVEDEPT service failures.</td>
+        </tr>
+    </table>
+    <h3>Sample JMS Application</h3>
+    <p>
+        The classes in the table below illustrate the use of the JTux JMS API provided 
+        by the {@link jtux.jms} package. Together, they form a sample application 
+        consisting of the following two Tuxedo services:
+        <dl>
+            <dt><b>JMSENQ</b></dt>
+            <dd>
+                Enqueues a message in a JMS queue.</dd>
+            <dt><b>MOVEDEPT</b></dt>
+            <dd>
+                Dequeues a message from a JMS queue.</dd>
+        </dl>
+        For instructions on how to compile and run this sample application see the <a href="../JTux_jar.html">
+            JTux.jar</a>, <a href="../JServer.html">JServer</a> and <a href="../JTMS.html">JTMS</a>
+        manual pages.
+    </p>
+    <table>
+        <col width="30%" />
+        <col width="70%" />
+        <tr>
+            <th>
+                Name</th>
+            <th>
+                Purpose</th>
+        </tr>
+        <tr>
+            <td>
+                <a href="../samples/JMSService.html">JMSService</a>
+            </td>
+            <td>Provides the FML field definitions for the JMSENQ and JMSDEQ services.</td>
+        </tr>
+        <tr>
+            <td>
+                <a href="../samples/JMSServer.html">JMSServer</a>
+            </td>
+            <td>Implements the JMSENQ and JMSDEQ services.</td>
+        </tr>
+        <tr>
+            <td>
+                <a href="../samples/JMSClient.html">JMSClient</a>
+            </td>
+            <td>Provides methods for invoking the JMSENQ and JMSDEQ services.</td>
+        </tr>
+    </table>
+</body>

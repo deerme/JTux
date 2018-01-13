@@ -1,0 +1,66 @@
+<!-- Copyright 2004 OTP Systems Oy. All rights reserved. -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+    <head>
+        <title>JTuxWS.jar</title>
+        <link rel="stylesheet" href="OTPDoc.css" type="text/css">
+    </head>
+    <body>
+        <div id="Banner"><img src="OTPDocBanner.png"></div>
+        <div id="Main">
+            <h1>JTuxWS.jar</h1>
+            <p>
+                JTuxWS.jar is the Java class library containing the Java API for Tuxedo/WS 
+                described in the <a href="api/index.html">JTux Workstation Programming Reference</a>. 
+                The JTuxWS.jar file is located in the <code>lib</code> subdirectory of the JTux 
+                Workstation directory.
+            </p>
+            <p>
+                &raquo; <a href="#compile">Compiling JTux Workstation clients using JTuxWS.jar</a><br>
+                &raquo; <a href="#run">Running JTux Workstation clients using JTuxWS.jar</a><br>
+            </p>
+            <h2 id="compile">Compiling JTux Workstation clients using JTuxWS.jar</h2>
+            <p>
+                To compile a JTux Workstation client using JTuxWS.jar, simply add the 
+                JTuxWS.jar file to the classpath of the Java compiler. For example, the command 
+                for compiling the <a href="samples/SimpleClient.html">SimpleClient</a> class 
+                written in Java looks like this:
+                <pre>javac -classpath <i>JTUXWSDIR</i>/lib/JTuxWS.jar -d <i>dir</i> SimpleClient.java</pre>
+                where <code><i>JTUXWSDIR</i></code> is the JTux Workstation directory and <code><i>dir</i></code>
+                is the output directory in which to write the <code>SimpleClient.class</code> file.
+            </p>
+            <h2 id="run">Running JTux Workstation clients using JTuxWS.jar</h2>
+            <p>
+                To run a JTux Workstation client using JTuxWS.jar, the JTuxWS.jar class library 
+                must be present in the class path of the Java application launcher. 
+                Furthermore, at runtime, JTuxWS.jar uses a native code library called 
+                JTuxWSInterop and the directory containing this library must be passed to the 
+                Java application launcher using the <code>java.library.path</code> system 
+                property. On Unix, this is the <code>lib</code> and on Windows the <code>bin</code>
+                subdirectory of the JTux Workstation directory. Finally, to run a JTux 
+                Workstation client using a 64-bit version of JTux Workstation, the <code>-d64</code>
+                command line option must be passed to the Java application launcher as well.
+            </p>
+            <p>For example, the following command runs the <a href="samples/SimpleClient.html">SimpleClient</a>
+                sample application using a 64-bit version of JTux Workstation on Unix:
+                <pre>java -d64 -classpath <i>JTUXWSDIR</i>/lib/JTuxWS.jar:<i>dir</i> -Djava.library.path=<i>JTUXWSDIR</i>/lib SimpleClient "Hello, World!"</pre>
+                and the following command runs the SimpleClient sample application using a 
+                32-bit version of JTux Workstation on Windows:
+                <pre>java -classpath <i>JTUXWSXDIR</i>\lib\JTuxWS.jar;<i>dir</i> -Djava.library.path=<i>JTUXWSDIR</i>\bin SimpleClient "Hello, World!"</pre>
+                In these examples, <code><i>JTUXWSDIR</i></code> is the JTux Workstation 
+                directory and <code><i>dir</i></code> is the directory containing the <code>SimpleClient.class</code>
+                file.
+            </p>
+            <p>
+                These examples assume that the Tuxedo system environment variables are 
+                set as described in the Tuxedo installation guide (Chapter 6 "Performing 
+                Post-Installation Tasks", sections "Setting Environment variables on a Windows 
+                System" and "Setting Environment variables on a UNIX system") and the Tuxedo 
+                setup guide (Chapter 11, "Setting up Workstation Clients", section "Defining 
+                Workstation Clients").
+            </p>
+            <hr>
+            Copyright &copy; OTP Systems Oy. All rights reserved.
+        </div>
+    </body>
+</html>

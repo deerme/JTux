@@ -1,0 +1,200 @@
+<!-- Copyright 2004 OTP Systems Oy. All rights reserved. -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+    <head>
+        <title>JTMS</title>
+        <link rel="stylesheet" href="OTPDoc.css" type="text/css">
+    </head>
+    <body>
+        <div id="Banner"><img src="OTPDocBanner.png"></div>
+        <div id="Main">
+            <h1>JTMS</h1>
+            <p>
+                JTMS is the JTux distributed transaction management server for JDBC and JMS 
+                resource managers. In cooperation with <a href="JServer.html">JServer</a>, JTMS 
+                allows Tuxedo applications to perform JDBC and JMS operations as part of 
+                distributed transactions managed by Tuxedo. The JTMS executable is located in 
+                the <code>bin</code> subdirectory of the JTux directory.
+            </p>
+            <p>
+                &raquo; <a href="#config">Configuring a JTMS server group</a><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&raquo; <a href="#openinfo">OPENINFO string 
+                    format</a><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&raquo; <a href="#envvars">Environment 
+                    variables</a><br>
+                &raquo; <a href="#jdbc">Configuring a JTMS/JDBC server group</a><br>
+                &raquo; <a href="#jms">Configuring a JTMS/JMS server group</a><br>
+            </p>
+            <h2 id="config">Configuring a JTMS server group</h2>
+            <p>
+                JTux clients and servers performing JDBC and JMS operations as part of 
+                distributed transactions managed by Tuxedo must be configured to run in a JTMS 
+                server group. A JTMS server group is a Tuxedo server group that is configured 
+                to connect to a particular JDBC or JMS resource manager using JTMS as its 
+                distributed transaction management server.
+            </p>
+            <h3 id="openinfo">OPENINFO string format</h3>
+            <p>
+                The OPENINFO string of a JTMS server group has the following format:
+                <pre>OPENINFO="JTux:<i>api</i>:<i>properties</i>"</pre>
+                For example, the configuration of a JTMS server group accessing an Oracle 
+                database using the Connect for JDBC driver of DataDirect looks like this:
+                <pre>JORAGRP LMID="<i>machine</i>" 
+        GRPNO=<i>number</i>
+        TMS="JTMS"
+        OPENINFO="JTux:JDBC:XADataSourceClass=com.ddtek.jdbcx.oracle.OracleDataSource,serverName=<i>host</i>,portNumber=1521,SID=<i>SID</i>,user=<i>user</i>,password=<i>password</i>"</pre>
+            </p>
+            <p>
+                The <i>api</i> part of the OPENINFO string specifies the Java API to use for 
+                accessing the involved resource manager. This can be either JDBC, for accessing 
+                relational databases, or JMS, for accessing messaging servers. Detailed 
+                information about configuring a JTMS server group for accessing these two types 
+                of resource managers can be found in the sections below.
+            </p>
+            <p>
+                The <i>properties</i> part of the OPENINFO string specifies the properties for 
+                connecting to the involved resource manager. These properties can be specified 
+                either inline in the OPENINFO string or in a separate properties file. In the 
+                former case, the <i>properties</i> part of the OPENINFO string takes the form 
+                of a comma-separated list of <i>name</i>=<i>value</i> pairs. In the latter 
+                case, the <i>properties</i> part of the OPENINFO string takes the form <code>@<i>filename</i></code>
+                where <i>filename</i> specifies the name of the file containing the actual 
+                connection properties.
+            </p>
+            <p>
+                When specified as part of the OPENINFO string, the following additional rules 
+                apply for property values.
+                <ul>
+                    <li>
+                        A pair of commas in a property value is interpreted as a single, literal comma. 
+                        This allows commas to be inserted in property values where they would otherwise 
+                        be interpreted as property separators.
+                    </li>
+                    <li>
+                        A property value specified in the form <code>$<i>varname</i></code> takes its 
+                        value from the environment variable identified by <i>varname</i>. This allows 
+                        property values to be set in the server group's environment file so that the 
+                        application's TUXCONFIG file does not need to be modified when one of them 
+                        changes.
+                    </li>
+                </ul>
+            </p>
+            <h3 id="envvars">Environment variables</h3>
+            <p>
+                The following environment variables are typically set in the group level 
+                ENVFILE of a JTMS server group.
+                <dl>
+                    <dt><code>CLASSPATH</code> </dt>
+                    <dd>
+                        Specifies the locations in which the JTMS searches for Java class files. This 
+                        environment variable must be set to include the JDBC driver or JMS client 
+                        libraries.
+                    </dd>
+                    <dt><code>JVM_OPTIONS</code> </dt>
+                    <dd>
+                        Specifies the JVM options, if any, that must be passed to the JVM 
+                        implementation used by the JTMS at startup. This environment variable must be 
+                        set if the JDBC driver or JMS client requires any special JVM options. For 
+                        example, if the JDBC driver or JMS client uses native code libraries then the 
+                        location of these libraries must be specified by setting
+                        <pre>JVM_OPTIONS=-Djava.library.path=<i>dirs</i></pre>
+                        where <i>dirs</i> is a colon (Unix) or semi-colon (Windows) separated list of 
+                        directories containing the native code libraries used by the JDBC driver or JMS 
+                        client.
+                    </dd>
+                </dl>
+            </p>
+            <h2 id="jdbc">Configuring a JTMS/JDBC server group</h2>
+            <p>
+                The configuration of a JTMS/JDBC server group looks like this:
+                <pre>*GROUPS
+"<i>JDBCGRP</i>" GRPNO=<i>number</i> 
+          TMSNAME="JTMS" 
+          OPENINFO="JTux:JDBC:XADataSourceClass=<i>class</i>,..." 
+          ENVFILE="<i>path</i>"
+          </pre>
+                As this configuration template shows, the <i>api</i> part of the OPENINFO 
+                string of a JTMS/JDBC server group must be set to "JDBC" and its <i>properties</i>
+                part must contain a property called XADataSourceClass. The XADataSourceClass 
+                property specifies the name of a class implementing the javax.sql.XADataSource 
+                interface that will be used to connect to the involved JDBC server. This 
+                XADataSource class is provided by a so-called JDBC driver which must be 
+                obtained separately. To enable JTux to load the XADataSource class provided by 
+                the JDBC driver, the server group's environment file must set the CLASSPATH 
+                environment variable to include the JDBC driver's class libraries.
+            </p>
+            <p>
+                The XADataSource class typically requires a couple of additional connection 
+                properties to be set to connect to a particular database server. These 
+                properties can be found in the documentation of the JDBC driver.
+            </p>
+            <p>
+                JTux has been tested to work with the following JDBC 3.0 compliant JDBC 
+                drivers:
+                <ul>
+                    <li>
+                        <a href="http://www.datadirect.com" target="_blank">DataDirect Connect for JDBC</a>
+                        with Oracle 10g and DB2 8.2. Example OPENINFO strings:
+                        <pre>JTux:JDBC:XADataSourceClass=com.ddtek.jdbcx.oracle.OracleDataSource,serverName=<i>host</i>,portNumber=1521,SID=<i>SID</i>,user=<i>user</i>,password=<i>password</i>
+JTux:JDBC:XADataSourceClass=com.ddtek.jdbcx.db2.DB2DataSource,serverName=<i>host</i>,portNumber=50000,databaseName=<i>db</i>,user=<i>user</i>,password=<i>password</i>
+</pre>
+                    </li>
+                    <li>
+                        <a href="http://www.inetsoftware.de" target="_blank">i-net software Oranxo</a> with 
+                        Oracle 10g. Example OPENINFO string:
+                        <pre>JTux:JDBC:XADataSourceClass=com.inet.ora.XDataSource,serverName=<i>host</i>,portNumber=1521,serviceName=<i>SID</i>,user=<i>user</i>,password=<i>password</i></pre>
+                    </li>
+                </ul>
+            </p>
+            <h2 id="jms">Configuring a JTMS/JMS server group</h2>
+            <p>
+                The configuration of a JTMS/JMS server group looks like this:
+                <pre>*GROUPS
+"<i>JMSGRP</i>"  GRPNO=<i>number</i> 
+          TMSNAME="JTMS" 
+          OPENINFO="JTux:JMS:XAConnectionFactoryClass=<i>class</i>,..." 
+          ENVFILE="<i>path</i>" 
+          </pre>
+                As this configuration template shows, the <i>api</i> part of the OPENINFO 
+                string of a JTMS/JMS server group must be set to "JMS" and its <i>properties</i>
+                part must contain a property called XAConnectionFactoryClass. The 
+                XAConnectionFactoryClass property specifies the name of a class implementing 
+                the javax.jms.XAConnectionFactory interface that will be used to connect to the 
+                involved messaging server. This XAConnectionFactory class is provided by the 
+                JMS client of the involved messaging server. To enable JTux to load the 
+                XAConnectionFactory class provided by the JMS client, the server group's 
+                environment file must set the CLASSPATH environment variable to include the JMS 
+                client libraries.
+            </p>
+            <p>
+                If the JMS client is not JMS 1.1 compliant then an additional property called 
+                cfType must be set that specifies whether the XAConnectionFactory class is a 
+                javax.jms.XAQueueConnectionFactory (cfType=queue) or a 
+                javax.jms.XATopicConnectionFactory (cfType=topic). The XADataSource class 
+                typically requires a couple of additional connection properties to be set to 
+                connect to a particular messaging server. These properties can be found in the 
+                documentation of the JMS client.
+            </p>
+            <p>
+                By default, JTux assumes that the XAConnectionFactory class follows the 
+                JavaBean design pattern for setting connection properties. If this is not the 
+                case, then an additional property called "propertySetter" can be set that 
+                specifies a name of a method provided by the XAConnectionFactory class for 
+                setting the connection properties.
+            </p>
+            <p>
+                JTux can work with both JMS 1.0.2 and JMS 1.1 compliant JMS clients. In 
+                particular, JTux has been tested to work with the following JMS client:
+                <ul>
+                    <li>
+                        <a href="http://www.sun.com/software/products/message_queue" target="_blank">Sun 
+                            Java System Message Queue</a>. Example OPENINFO string:
+                        <pre>JTux:JMS:XAConnectionFactoryClass=com.sun.messaging.XAConnectionFactory,propertySetter=setProperty,imqAddressList=mq://<i>host</i>:7676/jms</pre>
+                    </li>
+                </ul>
+            </p>
+            <hr>
+            Copyright &copy; OTP Systems Oy. All rights reserved.
+        </div>
+    </body>
+</html>

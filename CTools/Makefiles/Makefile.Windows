@@ -1,0 +1,48 @@
+# Copyright 2004 OTP Systems Oy. All rights reserved.
+
+SHORT_PLATFORM  := win32
+
+# By default, the Microsoft C/C++ compiler runs with extensions enabled.
+# It would be preferable to disable these extensions using the /Za switch
+# to force pure ANSI C but, unfortunately, the Windows system header files
+# make use of these extensions and do not compile with the /Za switch.
+
+DebugCFlags	:= /Zi
+DllCFlags	:= /LD
+ObjSuffix	:= .obj
+ExeSuffix 	:= .exe
+LibPrefix	:= # empty
+LibSuffix	:= .lib
+DllPrefix	:= # empty
+DllSuffix	:= .dll
+LocalHostName	:= $(COMPUTERNAME)
+CurrentDir	:= $(shell cd)
+
+# Note that the /MD flag is necessary, even when just compiling, to make
+# the generated object files reference the MSVCRT library rather than the
+# LIBC library.
+
+export CC := cl /MD ws2_32.lib
+
+# Compile arguments:
+# 	$(1) Compile flags
+# 	$(2) Source files
+#
+
+Compile = $(CC) /c $(1) $(2)
+
+# MakeLib arguments:
+# 	$(1) Output file
+# 	$(2) Input files
+
+MakeLib = lib /out:$(1) $(2)
+
+# MakeExe arguments:
+# 	$(1) Output file
+# 	$(2) Compile flags
+# 	$(3) Input files
+# 	$(4) Link libraries
+
+MakeExe = $(CC) /Fe$(1) $(2) $(3) $(4)
+
+MakeDll = TODO

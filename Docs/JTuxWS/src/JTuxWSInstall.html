@@ -1,0 +1,94 @@
+<!-- Copyright 2004 OTP Systems Oy. All rights reserved. -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+    <head>
+        <title>JTux Workstation Installation Guide</title>
+        <link rel="stylesheet" href="OTPDoc.css" type="text/css">
+    </head>
+    <body>
+        <div id="Banner"><img src="OTPDocBanner.png"></div>
+        <div id="Main">
+            <h1>JTux Workstation Installation Guide</h1>
+            This document describes how to install JTux Workstation on a client machine in 
+            your local Tuxedo environment.
+            <p>
+                &raquo; <a href="#prereqs">Prerequisites</a><br>
+                &raquo; <a href="#package">Installing the JTux Workstation software package</a><br>
+            </p>
+            <h2 id="prereqs">Prerequisites</h2>
+            <p>
+                Before you start the installation, make sure the following prerequisites are 
+                met:
+                <ol>
+                    <li>
+                        Tuxedo/WS version 8.1 is installed on the target machine.
+                    </li>
+                    <li>
+                        <p>
+                            There is a Java SDK (JDK) version 1.4 or higher installed on the target 
+                            machine. The JDK's <code>java</code> application launcher must be in the 
+                            current PATH. These requirements can be checked by executing the following 
+                            command:
+                            <pre>java -version</pre>
+                            This command should succeed and display a Java version 1.4 or higher.
+                        </p>
+                        <p>
+                            If there is no suitable JDK installed on the target machine then one of the 
+                            following JDKs should be installed. For Solaris, Windows and Linux you can use <a target="_blank" href="http://java.sun.com/j2se">
+                                Sun J2SE 1.4 or higher</a>. For Windows and Linux you can also use <a target="_blank" href="http://www.bea.com/jrockit">
+                                BEA JRockit</a>. For HP-UX you can use <a target="_blank" href="http://www.hp.com/java">
+                                HP J2SE 1.4 or higher</a>.
+                        </p>
+                    </li>
+                    <li>
+                        You have the JTux Workstation installation packages that matches the type of 
+                        the target machine, i.e.
+                        <ul>
+                            <li>
+                                <code>JTuxWS-1.1.<i>x</i>-win32-install.jar</code> for Windows/Intel with 
+                                32-bit Tuxedo.
+                            </li>
+                            <li>
+                                <code>JTuxWS-1.1.<i>x</i>-linux32-install.jar</code> for Linux/Intel with 
+                                32-bit Tuxedo.
+                            </li>
+                            <li>
+                                <code>JTuxWS-1.1.<i>x</i>-sol32-install.jar</code> for Solaris/Sparc with 
+                                32-bit Tuxedo.
+                            </li>
+                            <li>
+                                <code>JTuxWS-1.1.<i>x</i>-sol64-install.jar</code> for Solaris/Sparc with 
+                                64-bit Tuxedo.
+                            </li>
+                            <li>
+                                <code>JTuxWS-1.1.<i>x</i>-hpux32-install.jar</code> for HP-UX/PA-RISC with 
+                                32-bit Tuxedo.
+                            </li>
+                            <li>
+                                <code>JTuxWS-1.1.<i>x</i>-hpux64-install.jar</code> for HP-UX/PA-RISC with 
+                                64-bit Tuxedo.
+                            </li>
+                        </ul>
+                        where <i>x</i> is the latest available patch level for JTux Workstation 1.1.
+                    </li>
+                </ol>
+            </p>
+            <h2 id="package">Installing the JTux Workstation software package</h2>
+            <p>
+                The JTux Workstation software package can be installed by running the following 
+                command:
+                <pre>java -jar JTuxWS-1.1.<i>x</i>-<i>platform</i>-install.jar -dir <i>install_dir</i></pre>
+                where <code><i>install_dir</i></code> is the 
+                directory in which to create the JTux Workstation product directory. For 
+                example,
+                JTux Workstation 1.1.0 can be installed on a Solaris/Sparc machine with 64-bit 
+                Tuxedo using the following command:
+                <pre>java -jar JTuxWS-1.1.0-sol64-install.jar -dir /opt</pre>
+                This will create a new <code>JTuxWS-1.1.0</code> product directory inside the <code>
+                    /opt</code> directory.
+            </p>
+            <hr>
+            Copyright &copy; OTP Systems Oy. All rights reserved.
+        </div>
+    </body>
+</html>

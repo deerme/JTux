@@ -1,0 +1,40 @@
+# Copyright 2004 OTP Systems Oy
+
+ifndef PLATFORM
+$(error "Environment variable PLATFORM not set")
+endif
+
+ifndef JDKDIR
+$(error "Environment variable JDKDIR not set")
+endif
+
+ifeq ($(PLATFORM),Windows)
+JNI_PLATFORM := win32
+export JNI_LIBRARY := $(JDKDIR)\jre\bin\server\jvm.dll
+endif
+
+ifeq ($(PLATFORM),Solaris)
+JNI_PLATFORM := solaris
+ifdef IS_64_BIT_PLATFORM
+JNI_LIB_DIR := $(JDKDIR)/jre/lib/sparcv9
+else
+JNI_LIB_DIR := $(JDKDIR)/jre/lib/sparc
+endif
+export JNI_LIBRARY := $(JNI_LIB_DIR)/server/libjvm.so
+export LD_LIBRARY_PATH := $(JNI_LIB_DIR):$(JNI_LIB_DIR)/server:$(JNI_LIB_DIR)/native_threads:$(LD_LIBRARY_PATH)
+endif
+
+ifeq ($(PLATFORM),Linux)
+JNI_PLATFORM := linux
+JNI_LIB_DIR := $(JDKDIR)/jre/lib/i386
+export JNI_LIBRARY := $(JNI_LIB_DIR)/server/libjvm.so
+export LD_LIBRARY_PATH := $(JNI_LIB_DIR):$(JNI_LIB_DIR)/server:$(JNI_LIB_DIR)/native_threads:$(LD_LIBRARY_PATH)
+endif
+
+ifeq ($(PLATFORM),HP-UX)
+JNI_PLATFORM := hp-ux
+# See HP Java JNI Programmer's Guide
+CFLAGS := $(CFLAGS) +u4 -D_HPUX -D_POSIX_C_SOURCE=199506L
+endif
+
+JNI_INCLUDES := -I$(JDKDIR)/include -I$(JDKDIR)/include/$(JNI_PLATFORM)

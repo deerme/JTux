@@ -1,0 +1,30 @@
+# Copyright 2004 OTP Systems Oy. All rights reserved.
+
+package java.lang;
+
+class IllegalArgumentException
+{
+    constructor(String) alias init;
+}
+
+class IllegalStateException
+{
+    constructor(String) alias init;
+}
+
+package com.otpsystems.tools.jni;
+
+import java.io.Reader;
+
+class Java2C
+{
+    field year; # This is a static field
+
+    field input; # This is an instance field
+
+    constructor(Reader);
+
+    method configure(String[]); # This is a static method
+
+    method skip(Character); # This in an instance method
+}

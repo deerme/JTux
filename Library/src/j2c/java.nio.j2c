@@ -1,0 +1,14 @@
+# Copyright 2004 OTP Systems Oy. All rights reserved.
+
+package java.nio;
+
+class Buffer
+{
+    method clear();
+
+    method position() alias get_position;
+
+    method position(int);
+
+    method limit(int);
+}

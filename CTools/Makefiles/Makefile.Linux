@@ -1,0 +1,41 @@
+# Copyright 2004 OTP Systems Oy. All rights reserved.
+
+ifdef IS_64_BIT_PLATFORM
+SHORT_PLATFORM  := linux64
+else
+SHORT_PLATFORM  := linux32
+endif
+
+DllCFlags	:= -shared
+ObjSuffix	:= .o
+ExeSuffix	:= # empty
+LibPrefix	:= lib
+LibSuffix	:= .a
+DllPrefix	:= lib
+DllSuffix	:= .so
+LocalHostName	:= $(shell hostname -s)
+CurrentDir	:= $(shell pwd)
+
+export CC := gcc
+
+# Compile arguments:
+#       $(1) Compile flags
+#       $(2) Source files
+
+Compile = $(CC) -c $(1) $(2)
+
+# MakeLib arguments:
+#       $(1) Output file
+#       $(2) Input files
+
+MakeLib = ar -rc $(1) $(2)
+
+# MakeExe arguments:
+#       $(1) Output file
+#       $(2) Compile flags
+#       $(3) Input files
+#       $(4) Link libraries
+
+MakeExe = $(CC) -o $(1) $(2) $(3) $(4) -lpthread
+
+MakeDll = TODO

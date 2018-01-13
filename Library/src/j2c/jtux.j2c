@@ -1,0 +1,13 @@
+# Copyright 2004 OTP Systems Oy. All rights reserved.
+
+package jtux;
+
+class JTuxInterop
+{
+    # Needed for registering native server methods
+}
+
+class TUX
+{
+    method logStackTrace(Throwable);
+}

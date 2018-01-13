@@ -1,0 +1,224 @@
+<!-- Copyright 2004 OTP Systems Oy. All rights reserved. -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+    <head>
+        <title>JTux Installation Guide</title>
+        <link rel="stylesheet" href="OTPDoc.css" type="text/css">
+    </head>
+    <body>
+        <div id="Banner"><img src="OTPDocBanner.png"></div>
+        <div id="Main">
+            <h1>JTux Installation Guide</h1>
+            <p>
+                This document describes how to install JTux on a server machine in your local 
+                Tuxedo environment.
+            </p>
+            <p>
+                &raquo; <a href="#prereqs">Prerequisites</a><br>
+                &raquo; <a href="#package">Installing the JTux software package</a><br>
+                &raquo; <a href="#test">Testing the installation</a><br>
+            </p>
+            <h2 id="prereqs">Prerequisites</h2>
+            <p>
+                Before you start the installation, make sure the following prerequisites are 
+                met:
+                <ol>
+                    <li>
+                        Tuxedo version 8.1 or later is installed on the target machine.
+                    </li>
+                    <li>
+                        <p>There is a Java SDK version 1.4 or higher installed on the target machine. This 
+                            JDK must provide a JVM optimized for running server applications. Furthermore, 
+                            the JDK's java application launcher must be in the current PATH. These 
+                            requirements can be checked by executing the following command:
+                            <pre>java -server -version</pre>
+                            This command should succeed and display a Java version 1.4 or higher.
+                        </p>
+                        <p>
+                            On Windows, running the JDK's java executable from the PATH may not work if the 
+                            Sun client JRE is also installed. In this case, use the full path to the JDK's 
+                            java executable instead, for example <code>c:\j2sdk1.4.2_06\bin\java ...</code>.
+                        </p>
+                        <p>
+                            If there is no suitable JDK installed on the target machine then install <a href="http://java.sun.com/j2se" target="_blank">
+                                Sun J2SE 1.4 or higher</a> (for Solaris, Windows and Linux) or <a href="http://www.hp.com/java" target="_blank">
+                                HP J2SE 1.4 or higher</a> (for HP-UX).
+                        </p>
+                    </li>
+                    <li>
+                        If the target machine is an HP-UX 11i/PA-RISC machine then LD_PRELOAD 
+                        functionality must be present. This can be checked by searching the dld.sl 
+                        manual page for the keyword "LD_PRELOAD". If the manual page does not mention 
+                        LD_PRELOAD then patch PHSS_30966 or newer needs to be installed.
+                    </li>
+                    <li>
+                        You have the JTux installation packages that matches the specification of the 
+                        target machine, i.e.
+                        <ul>
+                            <li>
+                                <code>JTux-1.1.<i>x</i>-win32-install.jar</code> for Windows/Intel with 32-bit 
+                                Tuxedo.
+                            </li>
+                            <li>
+                                <code>JTux-1.1.<i>x</i>-linux32-install.jar</code> for Linux/Intel with 32-bit 
+                                Tuxedo.
+                            </li>
+                            <li>
+                                <code>JTux-1.1.<i>x</i>-sol32-install.jar</code> for Solaris/Sparc with 32-bit 
+                                Tuxedo.
+                            </li>
+                            <li>
+                                <code>JTux-1.1.<i>x</i>-sol64-install.jar</code> for Solaris/Sparc with 64-bit 
+                                Tuxedo.
+                            </li>
+                            <li>
+                                <code>JTux-1.1.<i>x</i>-hpux32-install.jar</code> for HP-UX/PA-RISC with 32-bit 
+                                Tuxedo.
+                            </li>
+                            <li>
+                                <code>JTux-1.1.<i>x</i>-hpux64-install.jar</code> for HP-UX/PA-RISC with 64-bit 
+                                Tuxedo.
+                            </li>
+                        </ul>
+                        where <code><i>x</i></code> is the latest available patch level for JTux 1.1.
+                    </li>
+                </ol>
+            </p>
+            <h2 id="package">Installing the JTux software package</h2>
+            <p>The JTux software package can be installed by running the following command:
+                <pre>java -jar JTux-1.1.<i>x</i>-<i>platform</i>-install.jar -dir <i>install_dir</i></pre>
+                where <code><i>install_dir</i></code> is the directory in which 
+                to create the JTux product directory. For example, JTux 
+                1.1.0 can be installed on a Solaris/Sparc machine with 64-bit Tuxedo using the 
+                following command:
+                <pre>java -jar JTux-1.1.0-sol64-install.jar -dir /opt</pre>
+                This will create a new <code>JTux-1.1.0</code> product directory inside the <code>/opt</code>
+                directory.
+            </p>
+            <p>
+                During the installation, a file called <code>JTux.env</code> is created in the 
+                JTux product directory. This file contains environment settings that are used 
+                by the JTux executables to locate the Java virtual machine 
+                libraries. If the JVM used by 
+                JTux must be changed after installation then this file must be updated 
+                accordingly. The easiest way to do this is by simply reinstalling JTux.
+            </p>
+            <h2 id="test">Testing the installation</h2>
+            <p>Execute the following steps to test the installation of JTux.
+                <ol>
+                    <li>
+                        Start a new command shell on the target machine.
+                    </li>
+                    <li>
+                        Create a new directory in a temporary location, for example:
+                        <pre>mkdir /tmp/test</pre>
+                        or, on Windows
+                        <pre>mkdir c:\Temp\Test</pre>
+                    </li>
+                    <li>
+                        Make the new directory the current working directory, for example:
+                        <pre>cd /tmp/test</pre>
+                        or, on Windows
+                        <pre>cd c:\Temp\Test</pre>
+                    </li>
+                    <li>
+                        Set the <code>TUXDIR</code> environment variable to point to the Tuxedo 
+                        installation directory, for example:
+                        <pre>TUXDIR=/opt/tuxedo8.1; export TUXDIR</pre>
+                        or, on Windows
+                        <pre>set TUXDIR=c:\bea\tuxedo8.1</pre>
+                    </li>
+                    <li>
+                        On Unix, source the <code>tux.env</code> file located in the Tuxedo 
+                        installation directory, for example:
+                        <pre>. $TUXDIR/tux.env</pre>
+                        On Windows, add the <code>bin</code> subdirectory of the Tuxedo installation 
+                        directory to the <code>PATH</code> environment variable, for example:
+                        <pre>set PATH=%TUXDIR%\bin;%PATH%</pre>
+                    </li>
+                    <li>
+                        Set the <code>JTUXDIR</code> environment variable to point to the JTux 
+                        installation directory, for example:
+                        <pre>JTUXDIR=/opt/JTux-1.1.0</pre>
+                        or, on Windows
+                        <pre>set JTUXDIR=c:\OTPSystems\JTux-1.1.0</pre>
+                    </li>
+                    <li>
+                        Add the <code>bin</code> subdirectory of the JTux installation directory to the <code>
+                            PATH</code> environment variable, for example:
+                        <pre>PATH=$JTUXDIR/bin:%PATH%</pre>
+                        or, on Windows
+                        <pre>set PATH=%JTUXDIR%\bin;%PATH%</pre>
+                    </li>
+                    <li>
+                        Set the <code>TUXCONFIG</code> environment variable so that it points to a file 
+                        named <code>TUXCONFIG</code> in the current working directory, for example:
+                        <pre>TUXCONFIG=/tmp/test/TUXCONFIG; export TUXCONFIG</pre>
+                        or, on Windows
+                        <pre>set TUXCONFIG=c:\Temp\Test\TUXCONFIG</pre>
+                    </li>
+                    <li>
+                        Set the <code>ULOGPFX</code> environment variable so that the Tuxedo ULOG file 
+                        will be created in the current working directory, for example:
+                        <pre>ULOGPFX=/tmp/test/ULOG; export ULOGPFX</pre>
+                        or, on Windows
+                        <pre>set ULOGPFX=c:\Temp\Test\ULOG</pre>
+                    </li>
+                    <li>
+                        On Linux, make sure that the <code>LANG</code> environment variable is set to 
+                        the value "C".
+                    </li>
+                    <li>
+                        On a 32-bit platform, run the following command:
+                        <pre>java -Djava.library.path=$JTUXDIR/lib -classpath $JTUXDIR/lib/JTux.jar jtux.install.TestConfig</pre>
+                        or, on Windows
+                        <pre>java -Djava.library.path=%JTUXDIR%\bin -classpath %JTUXDIR%\lib\JTux.jar jtux.install.TestConfig</pre>
+                        On a 64-bit platform, run the following command:
+                        <pre>java -d64 -Djava.library.path=$JTUXDIR/lib -classpath $JTUXDIR/lib/JTux.jar jtux.install.TestConfig</pre>
+                        or, on Windows
+                        <pre>java -d64 -Djava.library.path=%JTUXDIR%\bin -classpath %JTUXDIR%\lib\JTux.jar jtux.install.TestConfig</pre>
+                        This command generates a UBBCONFIG file called <code>test.ubb</code> that 
+                        contains the Tuxedo configuration for a small test application. If this command 
+                        fails then check the ULOG for error messages.
+                    </li>
+                    <li>
+                        Generate a binary Tuxedo configuaration file for the test application by 
+                        running the following command:
+                        <pre>tmloadcf -y test.ubb</pre>
+                    </li>
+                    <li>
+                        Boot the test application using the following command:
+                        <pre>tmboot -y</pre>
+                        The test application should boot without any errors. You should see this:
+                        <pre>Booting admin processes ...
+
+exec BBL -A :
+        process id=1784 ... Started.
+
+Booting server processes ...
+
+exec JServer -- -s TEST jtux.install.TestServer :
+        process id=1644 ... Started.
+2 processes started.</pre>
+                    </li>
+                    <li>
+                        On a 32-bit platform, run the following command.
+                        <pre>java -Djava.library.path=$JTUXDIR/lib -classpath $JTUXDIR/lib/JTux.jar jtux.install.TestClient</pre>
+                        or, on Windows
+                        <pre>java -Djava.library.path=%JTUXDIR%\bin -classpath %JTUXDIR%\lib\JTux.jar jtux.install.TestClient</pre>
+                        On a 64-bit platform, run the following command.
+                        <pre>java -d64 -Djava.library.path=$JTUXDIR/lib -classpath $JTUXDIR/lib/JTux.jar jtux.install.TestClient</pre>
+                        or, on Windows
+                        <pre>java -d64 -Djava.library.path=%JTUXDIR%\bin -classpath %JTUXDIR%\lib\JTux.jar jtux.install.TestClient</pre>
+                        You should see the following:
+                        <pre>Installation OK</pre>
+                    </li>
+                </ol>
+                If all of the above steps succeeded then JTux is installed correctly. You can 
+                now shut down and clean up the test environment.
+            </p>
+            <hr>
+            Copyright &copy; OTP Systems Oy. All rights reserved.
+        </div>
+    </body>
+</html>

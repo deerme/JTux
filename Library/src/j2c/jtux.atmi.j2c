@@ -1,0 +1,75 @@
+# Copyright 2003, 2004 OTP Systems Oy. All rights reserved.
+
+package jtux.atmi;
+
+import java.nio.ByteBuffer;
+
+class ATMI
+{
+    method tpunsol(ByteBuffer, int, int);
+}
+
+class TPSVCINFO
+{
+    field name;
+    field data;
+    field len;
+    field flags;
+    field cd;
+    field appkey;
+    field cltid;
+}
+
+class TPINIT
+{
+    field usrname;
+    field cltname;
+    field passwd;
+    field grpname;
+    field flags;
+    field data;
+}
+
+class CLIENTID
+{
+    field clientdata0;
+    field clientdata1;
+    field clientdata2;
+    field clientdata3;
+}
+
+class TPQCTL
+{
+    field flags;
+    field deq_time;
+    field priority;
+    field diagnostic;
+    field msgid;
+    field corrid;
+    field replyqueue;
+    field failurequeue;
+    field cltid;
+    field urcode;
+    field appkey;
+    field delivery_qos;
+    field reply_qos;
+    field exp_time;
+}
+
+class TPEVCTL
+{
+    field flags;
+    field name1;
+    field name2;
+    field qctl;
+}
+
+class TPTRANID
+{
+    field info0;
+    field info1;
+    field info2;
+    field info3;
+    field info4;
+    field info5;
+}

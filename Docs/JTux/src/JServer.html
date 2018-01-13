@@ -1,0 +1,216 @@
+<!-- Copyright 2004 OTP Systems Oy. All rights reserved. -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+    <head>
+        <title>JServer</title>
+        <link rel="stylesheet" href="OTPDoc.css" type="text/css">
+    </head>
+    <body>
+        <div id="Banner"><img src="OTPDocBanner.png"></div>
+        <div id="Main">
+            <h1>JServer</h1>
+            <p>
+                JServer is the JTux server executable for running Java based Tuxedo servers. 
+                The JServer executable is located in the <code>bin</code> subdirectory of the 
+                JTux directory.
+            </p>
+            <p>
+                &raquo; <a href="#srvcls">Server class requirements</a><br>
+                &raquo; <a href="#config">Configuring a JServer instance</a><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&raquo; <a href="#clopt">Command line options</a><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&raquo; <a href="#dtp">Supporting distributed 
+                    transactions</a><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&raquo; <a href="#envvars">Environment 
+                    variables</a><br>
+            </p>
+            <h2 id="srvcls">Server class requirements</h2>
+            <p>
+                A Java based Tuxedo server consists of a server class and all its supporting 
+                classes. A server class is a Java class designed to handle Tuxedo service 
+                requests. A server class defines one or more service routines and a number of 
+                optional server initialization and termination methods.
+            </p>
+            <p>
+                A service routine is a method of a server class that gets invoked by the 
+                JServer executable to handle service requests for a particular Tuxedo service. 
+                A service routine must be defined with the following signature:
+                <pre>public static void <i>tpservice</i>(<a href="api/jtux.atmi.TPSVCINFO_class_overview.html">jtux.atmi.TPSVCINFO</a>)
+{
+    ...
+}</pre>
+                A service routine must either return a reply using <a href="api/jtux.atmi.ATMI.tpreturn_method.html">
+                    jtux.atmi.ATMI.tpreturn</a> or forward the service request to another 
+                service using <a href="api/jtux.atmi.ATMI.tpforward_method.html">jtux.atmi.ATMI.tpforward</a>. 
+                For a complete description of the required behaviour of a service routine see 
+                the Tuxedo tpservice(3c) manual page.
+            </p>
+            <p>
+                Besides one or more service routines, a server class can define any of the 
+                following server initialization and termination methods:
+                <pre>public static int tpsvrinit(String[] args)
+{
+    ...
+}
+
+public static int tpsvrthrinit(String[] args)
+{
+    ...
+}
+
+public static void tpsvrthrdone()
+{
+    ...
+}
+
+public static void tpsvrdone()
+{
+   ...
+}</pre>
+                The required behaviour of these methods is described in the Tuxedo 
+                tpsvrinit(3c), tpsvrthrinit(3c), tpsvrthrdone(3c) and tpsvrdone(3c) manual 
+                pages, respectively.
+            </p>
+            <p>
+                The <a href="api/index.html">JTux Programming Guide</a> provides a number of 
+                sample server classes. The <a href="JTux_jar.html">JTux.jar</a> manual page 
+                explains how to compile a JTux server using the JTux.jar class library.
+            </p>
+            <h2 id="config">Configuring a JServer instance</h2>
+            <p>
+                The Tuxedo configuration of a JServer instance looks like this:
+                <pre>*SERVERS
+
+"JServer" SRVGRP="<i>identifier</i>" 
+          SRVID=<i>number</i>
+          CLOPT="[-A][<i>servopts options</i>] -- [-classpath <i>classpath</i>] [-s <i>svcspec</i>] <i>class</i> [<i>arg</i>...]"
+          MINDISPATCHTHREADS=<i>number</i>
+          MAXDISPATCHTHREADS=<i>number</i>
+          ENVFILE="<i>path</i>"
+</pre>
+            </p>
+            <h3 id="clopt">Command line options</h3>
+            <p>
+                The following command line parameters can be set in the CLOPT of a JServer.
+                <dl>
+                    <dt><code>-classpath <i>classpath</i></code> </dt>
+                    <dd>
+                        <p>
+                            Specifies the class path for the server class. This command line parameter has 
+                            the same syntax and semantics as the <code>-classpath</code> command line 
+                            parameter of the standard Java application launcher. The JTux.jar file against 
+                            which the server class was built should not be included in the class path as 
+                            the JServer does this automatically.
+                        </p>
+                        <p>
+                            If the <code>-classpath</code> command line parameter is not set then the 
+                            JServer uses the class path defined by the <code>CLASSPATH</code> environment 
+                            variable instead. If the <code>CLASSPATH</code> environment variable is not set 
+                            either then the JServer uses the current directory as the class path.
+                        </p>
+                        <p>
+                            The <code>-classpath</code> command line parameter should not be used if the 
+                            JServer is running as part of a JTMS server group. The reason for this is that 
+                            the JTMS and JServer generally need to share at least part of the class path 
+                            and this can only be achieved using the <code>CLASSPATH</code> environment 
+                            variable.
+                        </p>
+                    </dd>
+                    <dt><code>-s <i>svcspec</i></code> </dt>
+                    <dd>
+                        Maps Tuxedo service names onto a service routine defined by the Java/Tuxedo 
+                        server class. A <code>-s</code> command line parameter can be specified in one 
+                        of the following formats:
+                        <dl>
+                            <dt><code>-s :<i>method</i></code> </dt>
+                            <dd>
+                                This format identifies the named method as a service routine. This 
+                                identification allows the named method to be used as a service routine for 
+                                services advertised dynamically using the <a href="api/jtux.atmi.ATMI.tpadvertise_method.html">
+                                    jtux.atmi.ATMI.tpadvertise</a> method.
+                            </dd>
+                            <dt><code>-s <i>svc1</i>[,<i>svc2</i>...]:<i>method</i></code> </dt>.
+                            <dd>
+                                As the previous format, this format identifies the named method as a service 
+                                routine, allowing it to be used as a service routine for dynamically advertised 
+                                services. Furthermore, this format specifies an initial mapping of the Tuxedo 
+                                service names <code><i>svc1</i>[,<i>svc2</i>...]</code> to the given service 
+                                routine. The JServer will automatically advertise these service names at 
+                                startup.
+                            </dd>
+                            <dt><code>-s <i>svc1</i>[,<i>svc2</i>...]</code> </dt>
+                            <dd>
+                                This format identifies <code><i>svc1</i>[,<i>svc2</i>...]</code> as service 
+                                routines as well as initial services to be advertised by the JServer at 
+                                startup. This format is short for <code>-s <i>svc1</i>:<i>svc1</i> [-s <i>svc2</i>:<i>svc2</i>
+                                    ...]</code> in the previous format.
+                            </dd>
+                            <dt><code>-s @<i>file</i></code> </dt>
+                            <dd>
+                                This format specifies <code><i>file</i></code> as the name of a file containing 
+                                service mapping specifications. The JServer ignores empty lines and any text on 
+                                a line following the # character in this file. Each remaining line is treated 
+                                by the JServer as if it were passed as the argument of a <code>-s</code> command 
+                                line option in one of the previously three formats.
+                            </dd>
+                        </dl>
+                        The <code>-s</code> parameter can be specified as many times as needed. The <code>-s</code>
+                        parameter can be omitted in case the server does not advertise any services.
+                    </dd>
+                    <dt><code><i>class</i> </code></dt>
+                    <dd>
+                        Specifies the name of the server class to run. This class must define all the 
+                        service routines identified by any preceding <code>-s</code> command line 
+                        parameters.
+                    </dd>
+                    <dt><code><i>arg</i>...</code> </dt>
+                    <dd>
+                        Command line parameters following the name of the server class are passed as 
+                        arguments to the tpsvrinit() and tpsvrthrinit() methods of the server class, if 
+                        defined.
+                    </dd>
+                </dl>
+                For example, the JServer CLOPT for running the <a href="samples/SimpleServer.html">SimpleServer</a>
+                class looks like this:
+                <pre>CLOPT="-- -classpath <i>dir</i> -s TOUPPER SimpleServer"</pre>
+                where <i>dir</i> is the directory containing the <code>SimpleServer.class</code>
+                file.
+            </p>
+            <h3 id="dtp">Supporting distributed transactions</h3>
+            <p>
+                A JServer can be used as a non-transactional application server or as an 
+                application server that accesses a transactional JDBC or JMS resource manager. 
+                In the latter case, the Tuxedo server group containing the JServer must be 
+                configured to connect to the involved JDBC or JMS resource manager as described 
+                in the <a href="JTMS.html">JTMS manual page</a>.
+            </p>
+            <h3 id="envvars">Environment variables</h3>
+            <p>
+                The JServer executable uses the following environment variables:
+                <dl>
+                    <dt><code>CLASSPATH</code> </dt>
+                    <dd>
+                        Specifies the locations in which the JServer searches for Java class files if 
+                        the <code>-classpath</code> command line option is not set. If the JServer is 
+                        running stand-alone then this variable is typically set in the server level 
+                        ENVFILE. If the JServer is running as part of a JTMS server group then this 
+                        variable is typically set in the group level ENVFILE. Setting the <code>CLASSPATH</code>
+                        environment variable is optional if the JServer is running stand-alone but 
+                        required if the JServer is running as part of a JTMS server group (see the <a href="JTMS">
+                            JTMS manual page</a>).
+                    </dd>
+                    <dt><code>JVM_OPTIONS</code> </dt>
+                    <dd>
+                        Specifies the JVM options, if any, that must be passed to the JVM 
+                        implementation used by the JServer at startup. If the JServer is running 
+                        stand-alone then this variable is typically set in the server level ENVFILE. If 
+                        the JServer is running as part of a JTMS server group then this variable is 
+                        typically set in the group level ENVFILE. Setting the <code>JVM_OPTIONS</code> environment 
+                        variable is optional.
+                    </dd>
+                </dl>
+            </p>
+            <hr>
+            Copyright &copy; OTP Systems Oy. All rights reserved.
+        </div>
+    </body>
+</html>

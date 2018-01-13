@@ -1,0 +1,12 @@
+# Copyright 2003, 2004 OTP Systems Oy. All rights reserved.
+
+package jtux.xa;
+
+import javax.transaction.xa.XAResource;
+
+class XID
+{
+    field formatID;
+    field gtrid;
+    field bqual;
+}

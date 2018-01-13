@@ -1,0 +1,14 @@
+# Copyright 2004 OTP Systems Oy. All rights reserved.
+
+ifndef PLATFORM
+$(error Environment variable PLATFORM not set)
+endif
+
+export CC
+export CFLAGS
+
+ifeq ($(PLATFORM),Windows)
+libtmib := $(TUXDIR)/lib/libtmib.lib
+else
+libtmib := -ltmib
+endif

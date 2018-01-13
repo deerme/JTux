@@ -1,0 +1,67 @@
+<!-- Copyright 2004 OTP Systems Oy. All rights reserved. -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+    <head>
+        <title>JTux.jar</title>
+        <link rel="stylesheet" href="OTPDoc.css" type="text/css">
+    </head>
+    <body>
+        <div id="Banner"><img src="OTPDocBanner.png"></div>
+        <div id="Main">
+            <h1>JTux.jar</h1>
+            <p>
+                JTux.jar is the Java class library containing the Java API for Tuxedo described 
+                in the <a href="api/index.html">JTux Programming Reference</a>. The JTux.jar 
+                file is located in the <code>lib</code> subdirectory of the JTux directory.
+            </p>
+            <p>
+                &raquo; <a href="#compile">Compiling JTux clients and servers using JTux.jar</a><br>
+                &raquo; <a href="#run">Running JTux clients using JTux.jar</a><br>
+            </p>
+            <h2 id="compile">Compiling JTux clients and servers using JTux.jar</h2>
+            <p>
+                To compile a JTux client or server using JTux.jar, simply add the JTux.jar file 
+                to the classpath of the Java compiler. For example, the command for compiling 
+                the <a href="samples/SimpleServer.html">SimpleServer</a> class written in Java 
+                looks like this:
+                <pre>javac -classpath <i>JTUXDIR</i>/lib/JTux.jar -d <i>dir</i> SimpleServer.java</pre>
+                where <code><i>JTUXDIR</i></code> is the JTux directory and <code><i>dir</i></code>
+                is the output directory in which to write the <code>SimpleServer.class</code> file.
+            </p>
+            <h2 id="run">Running JTux clients using JTux.jar</h2>
+            <p>
+                JTux clients using JTux.jar can be run using the standard Java application 
+                launcher. JTux servers, on the other hande, must be run using the <a href="JServer.html">
+                    JServer</a> executable.
+            </p>
+            <p>
+                To run a JTux client using JTux.jar, the JTux.jar class library must be present 
+                in the class path of the Java application launcher. Furthermore, at runtime, 
+                JTux.jar uses a native code library called JTuxInterop and the directory 
+                containing this library must be passed to the Java application launcher using 
+                the <code>java.library.path</code> system property. On Unix, this is the <code>lib</code>
+                and on Windows the <code>bin</code> subdirectory of the JTux directory. 
+                Finally, to run a JTux client using a 64-bit version of JTux, the <code>-d64</code>
+                command line option must be passed to the Java application launcher as well.
+            </p>
+            <p>
+                For example, the following command runs the <a href="samples/SimpleClient.html">SimpleClient</a>
+                sample application using a 64-bit version of JTux on Unix:
+                <pre>java -d64 -classpath <i>JTUXDIR</i>/lib/JTux.jar:<i>dir</i> -Djava.library.path=<i>JTUXDIR</i>/lib SimpleClient "Hello, World!"</pre>
+                and the following command runs the SimpleClient sample application using a 
+                32-bit version of JTux on Windows:
+                <pre>java -classpath <i>JTUXDIR</i>\lib\JTux.jar;<i>dir</i> -Djava.library.path=<i>JTUXDIR</i>\bin SimpleClient "Hello, World!"</pre>
+                In these examples, <code><i>JTUXDIR</i></code> is the JTux directory and <code><i>dir</i></code>
+                is the directory containing the <code>SimpleClient.class</code> file.
+            </p>
+            <p>
+                These examples assume that the Tuxedo system environment variables are set as described in the Tuxedo 
+                installation guide (Chapter 6 "Performing Post-Installation Tasks", sections 
+                "Setting Environment variables on a Windows System" and "Setting Environment 
+                variables on a UNIX system").
+            </p>
+            <hr>
+            Copyright &copy; OTP Systems Oy. All rights reserved.
+        </div>
+    </body>
+</html>

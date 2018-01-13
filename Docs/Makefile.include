@@ -1,0 +1,55 @@
+# Copyright 2004 OTP Systems Oy. All rights reserved.
+
+BASE_DIR := ../..
+
+default: all
+
+include $(BASE_DIR)/Makefile.include
+
+pkg := $(ProductID)-$(JTux_release)-docs
+
+DocFiles := $(foreach Doc,$(Docs),build/$(pkg)/$(Doc).html)
+
+SampleFiles := $(foreach Sample,$(Samples),build/$(pkg)/samples/$(Sample).html)
+
+all: build build/$(pkg)/OTPDoc.css build/$(pkg)/OTPDocBanner.png build/$(pkg)/index.html $(DocFiles) apidoc samples
+
+samples: build/$(pkg)/samples/SourceFormat.css $(SampleFiles)
+
+build/$(pkg)/OTPDoc.css: $(BASE_DIR)/DocTools/Stylesheets/OTPDoc.css
+	cp $< $@
+
+build/$(pkg)/OTPDocBanner.png: $(BASE_DIR)/DocTools/Images/OTPLogoWhiteOnBlue.png
+	cp $< $@
+
+build/$(pkg)/index.html: src/$(ProductID).html
+	cp $< $@
+
+build/$(pkg)/%.html: src/%.html
+	cp $< $@
+
+build/$(pkg)/samples/SourceFormat.css: $(BASE_DIR)/DocTools/SourceFormat/src/css/SourceFormat.css
+	cp $< $@
+
+build/$(pkg)/samples/%.html: $(BASE_DIR)/Samples/src/java/%.java
+	$(subst /,\\,type $< | $(BASE_DIR)/DocTools/SourceFormat/build/SourceFormat.exe -java "-title:$(basename $(notdir $<))" > $@)
+
+apidoc:
+	javadoc -docletpath $(NDOCLET_HOME)/NDoclet.jar -doclet ndoclet.NDoclet $(JavadocFlags) -doctitle  "$(ProductName) Programming Reference (version $(JTux_release))" -bottom "Copyright &copy; <a href=\"http://www.otpsystems.com\"/>OTP Systems Oy</a>. All rights reserved." -nopackagetable -overview src/$(ProductID)Programming.html -d build\$(pkg)\api -sourcepath $(ABS_BASE_DIR)/Classes/src/java $(JavaPackages)
+
+build:
+	mkdir build
+	cd build && mkdir $(pkg)
+	cd build && cd $(pkg) && mkdir samples
+
+clean:
+	rm -rf build
+
+# tar + gzip = 6x smaller than jar
+# Use pacomp instead of tar because GnuWin32 tar does not correctly store
+# directory permissions when the archive is created on Windows.
+
+package:
+	cd build && pacomp -a -r -P $(pkg).tar $(pkg)\*
+	cd build && gzip -f $(pkg).tar
+

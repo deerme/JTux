@@ -1,0 +1,112 @@
+# Copyright 2004 OTP Systems Oy. All rights reserved.
+
+ifndef PLATFORM
+$(error Environment variable PLATFORM not set)
+endif
+
+include $(BASE_DIR)/CTools/Makefiles/Makefile.$(PLATFORM)
+
+ifndef JDK
+$(error Environment variable JDK not set)
+endif
+
+include $(BASE_DIR)/CTools/JNI/Makefiles/Makefile.$(JDK)
+
+ifndef TUX_VERSION
+$(error Environment variable TUX_VERSION not set)
+endif
+
+ifeq ($(TUX_VERSION),81)
+NICE_TUX_VERSION := 8.1
+endif
+
+ifndef NICE_TUX_VERSION
+$(error Unsupported Tuxedo version)
+endif
+
+include $(BASE_DIR)/CTools/Tuxedo/Makefiles/Makefile.Tuxedo
+
+JTux_release := 1.1
+JTux_patch_level := 0
+JTux_version := $(JTux_release).$(JTux_patch_level)
+
+JTux_version_defines := -DJTUX_RELEASE=$(JTux_release) -DJTUX_PATCH_LEVEL=$(JTux_patch_level) -DTUX_VERSION=$(TUX_VERSION)
+
+ABS_BASE_DIR := $(CurrentDir)/$(BASE_DIR)
+
+MSVCR71DLL := $(ABS_BASE_DIR)/Redistribute/Microsoft/MSVCRuntimes/msvcr71.dll
+
+JMSJar := $(ABS_BASE_DIR)/Redistribute/Sun/JMSClasses/javax.jms.jar
+
+OracleJDBCJar := $(ABS_BASE_DIR)/Redistribute/Oracle/JDBCDrivers/ojdbc14.jar
+
+OranxoJar := $(ABS_BASE_DIR)/Redistribute/INet/JDBCDrivers/Oranxo.jar
+
+ConnectJDBCJars := $(wildcard $(ABS_BASE_DIR)/Redistribute/DataDirect/ConnectJDBC/*.jar)
+
+IMQClientJars := $(wildcard $(ABS_BASE_DIR)/Redistribute/Sun/IMQClientJars/*.jar)
+
+OTPPlatformLibrary := $(ABS_BASE_DIR)/CTools/Platform/Library/build/$(LibPrefix)OTPPlatform$(LibSuffix)
+
+OTPTuxedoLibrary := $(ABS_BASE_DIR)/CTools/Tuxedo/Library/build/$(LibPrefix)OTPTuxedo$(LibSuffix)
+
+Qipcrm := $(ABS_BASE_DIR)/CTools/Tuxedo/Qipcrm/build/Qipcrm$(ExeSuffix)
+
+OTPJNILibrary := $(ABS_BASE_DIR)/CTools/JNI/Library/build/$(LibPrefix)OTPJNI$(LibSuffix)
+
+Java2CJar := $(ABS_BASE_DIR)/JavaTools/Java2C/build/Java2C.jar
+
+JTuxDevJar := $(ABS_BASE_DIR)/Classes/build/JTuxDev.jar
+
+JTuxJar := $(ABS_BASE_DIR)/Classes/build/JTux.jar
+
+JTuxWSJar := $(ABS_BASE_DIR)/Classes/build/JTuxWS.jar
+
+JTuxLibrary := $(ABS_BASE_DIR)/Library/build/$(LibPrefix)JTux$(LibSuffix)
+
+JTuxXASwitch := $(ABS_BASE_DIR)/XASwitch/build/JTux_xa_switch$(ObjSuffix)
+
+JTuxInteropDLL := $(ABS_BASE_DIR)/Interop/build/$(LibPrefix)JTuxInterop$(DllSuffix)
+
+JTuxWSInteropDLL := $(ABS_BASE_DIR)/Interop/build/$(LibPrefix)JTuxWSInterop$(DllSuffix)
+
+JTMS := $(ABS_BASE_DIR)/JTMS/build/JTMS$(ExeSuffix)
+
+JClient := $(ABS_BASE_DIR)/JClient/build/JClient$(ExeSuffix)
+
+JServer := $(ABS_BASE_DIR)/JServer/build/JServer$(ExeSuffix)
+
+INCLUDE_DIRS := Library/src/c Library/build CTools/JNI/Library/src/c CTools/Tuxedo/Library/src/c CTools/Platform/Library/src/c
+
+INCLUDES := $(addprefix -I$(ABS_BASE_DIR)/,$(INCLUDE_DIRS)) $(JNI_INCLUDES) -I$(TUXDIR)/include
+
+CFLAGS := $(CFLAGS) $(JTux_version_defines) $(INCLUDES)
+
+#-----------------------------------------------------------------------------
+ifeq ($(PLATFORM),Windows)                     # Windows specific definitions
+
+FS := \\
+PS := ;
+
+DLLDirectory := bin
+
+upload := pscp
+
+#-----------------------------------------------------------------------------
+else						   # Unix generic definitions
+
+FS := /
+PS := :
+
+DLLDirectory := lib
+
+upload := scp
+
+endif
+#-----------------------------------------------------------------------------
+
+Java2C := java -classpath $(Java2CJar)$(PS)$(JTuxDevJar) com.otpsystems.tools.jni.Java2C
+
+javah := javah -classpath $(JTuxDevJar)
+
+upload_target := disn3h47@www.otpsystems.com:/var/web2/download

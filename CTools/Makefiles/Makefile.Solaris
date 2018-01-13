@@ -1,0 +1,51 @@
+# Copyright 2004 OTP Systems Oy. All rights reserved.
+
+ifdef IS_64_BIT_PLATFORM
+SHORT_PLATFORM  := sol64
+else
+SHORT_PLATFORM  := sol32
+endif
+
+DllCFlags       := -G
+ObjSuffix	:= .o
+ExeSuffix	:= # empty
+LibPrefix	:= lib
+LibSuffix	:= .a
+DllPrefix	:= lib
+DllSuffix	:= .so
+LocalHostName	:= $(shell hostname)
+CurrentDir	:= $(shell pwd)
+
+# Compile arguments:
+#       $(1) Compile flags
+#       $(2) Source files
+
+ifdef IS_64_BIT_PLATFORM
+Compile = cc -mt -c -Kpic -xarch=v9 $(1) $(2)
+else
+Compile = cc -mt -c -Kpic $(1) $(2)
+endif
+
+# MakeLib arguments:
+#       $(1) Output file
+#       $(2) Input files
+
+MakeLib = /usr/ccs/bin/ar -r -c $(1) $(2)
+
+strip := /usr/ccs/bin/strip
+
+# MakeExe arguments:
+#       $(1) Output file
+#       $(2) Compile flags
+#       $(3) Input files
+#       $(4) Link libraries
+
+ifdef IS_64_BIT_PLATFORM
+export CC := cc -mt -Kpic -xarch=v9 -lsocket -lnsl -ldl
+else
+export CC := cc -mt -Kpic -lsocket -lnsl -ldl
+endif
+
+MakeExe = $(CC) -o $(1) $(2) $(3) $(4)
+
+MakeDll = TODO

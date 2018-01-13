@@ -1,0 +1,155 @@
+On Solaris 32-bit and 64-bit:
+
+	WSH terminates during execution of DownloadClient using JTux
+	Workstation.
+	TODO: Make C test program that reproduces this and file Tuxedo
+	bug report.
+
+On Solaris 64-bit and HP-UX 64-bit:
+
+	Cleaning of /Q IPC resources fails at end of SampleConfig
+	TODO: Make C test program that reproduces this and file Tuxedo
+	bug report.
+
+On HP-UX 32-bit:
+
+	Running /WS samples fails with the following logged to the screen:
+
+	  <screen>
+	  cd build && java  -classpath JTuxWS-1.1.dev/lib/JTuxWS.jar:. -Djava.library.path=JTuxWS-1.1.dev/lib SimpleClient "Hello, World"
+	  Returned string is: HELLO, WORLD
+	  cd build && java  -classpath JTuxWS-1.1.dev/lib/JTuxWS.jar:. -Djava.library.path=JTuxWS-1.1.dev/lib SimpleAsyncClient "Hello, World"
+	  Sending 'Hello, World' to service TOUPPER
+	  Returned string is: HELLO, WORLD
+
+	  Pid 3791 killed due to trashed stack.
+
+	  Pid 3791 was killed due to failure in writing the signal context.
+	  /bin/sh: 3791 Illegal instruction(coredump)
+	  </screen>
+
+	Given the problems with /WS on Solaris and the absence of this
+	behaviour on Linux and Windows, it's probably a bug in Tuxedo.
+	TODO: Make C test program that reproduces this and file Tuxedo
+	bug report.
+
+On HP-UX 64-bit:
+
+	/WS samples fail on unsolicited message handling.
+	TODO: Make C test program that reproduces this and file Tuxedo bug
+	report.
+
+On HP-UX 64-bit:
+
+	A similar crash as with HP-UX 32-bit also occurs on 64-bit:
+
+	An unexpected exception has been detected in native code outside the VM.
+	Unexpected Signal : 10 occurred at PC=0xC0000000005E4677
+	Function=_doprnt
+	Library=/usr/lib/pa20_64/libc.2
+
+
+	Dynamic libraries:
+	/opt/java1.4/bin/PA_RISC2.0W/java
+		text:0x4000000000000000-0x400000000000b0d4 data:0x8000000100000000-0x8000000100000cc0
+
+	/usr/lib/pa20_64/libpthread.1
+		text:0xc000000000350000-0xc0000000003674d0 data:0x800003fffec00000-0x800003fffec044e0
+
+	/opt/java1.4/jre/lib/PA_RISC2.0W/server/libjvm.sl
+		text:0xc000000000c00000-0xc00000000182cda8 data:0x800003fffe800000-0x800003fffeb2ccd0
+
+	/usr/lib/pa20_64/libdl.1
+		text:0xc000000000091000-0xc000000000092954 data:0x800003fffe000000-0x800003fffe0001a8
+
+	/usr/lib/pa20_64/libc.2
+		text:0xc000000000500000-0xc00000000061b9b0 data:0x800003fffdc00000-0x800003fffdc1b320
+
+	/usr/lib/pa20_64/libm.2
+		text:0xc000000000040000-0xc000000000065d48 data:0x800003fffd800000-0x800003fffd802bd0
+
+	/usr/lib/pa20_64/librt.2
+		text:0xc000000000098000-0xc00000000009c194 data:0x800003fffd400000-0x800003fffd400448
+
+	/usr/lib/pa20_64/libcl.2
+		text:0xc000000000380000-0xc000000000404ea8 data:0x800003fffcc00000-0x800003fffcc4b4e8
+
+	/usr/lib/pa20_64/libCsup.2
+		text:0xc0000000004e0000-0xc0000000004f8040 data:0x800003fffc800000-0x800003fffc8043e8
+
+	/opt/java1.4/jre/lib/PA_RISC2.0W/native_threads/libhpi.sl
+		text:0xc0000000000f0000-0xc0000000000ff1d8 data:0x800003fffbc00000-0x800003fffbc01d68
+
+	/opt/java1.4/jre/lib/PA_RISC2.0W/libverify.sl
+		text:0xc000000000620000-0xc0000000006339d8 data:0x800003fffb000000-0x800003fffb001810
+
+	/opt/java1.4/jre/lib/PA_RISC2.0W/libjava.sl
+		text:0xc000000000690000-0xc0000000006b9a48 data:0x800003fffa800000-0x800003fffa803098
+
+	/opt/java1.4/jre/lib/PA_RISC2.0W/libzip.sl
+		text:0xc000000000820000-0xc000000000836464 data:0x800003fffa400000-0x800003fffa402170
+
+	/usr/lib/nls/loc/pa20_64/locales.2/en_US.iso88591
+		text:0xc000000000094000-0xc000000000097cec data:0x800003ffee000000-0x800003ffee003fd8
+
+	/home/robin/support/JTux1/JTux-1.1/Samples/build/JTuxWS-1.1.0/lib/libJTuxWSInterop.sl
+		text:0xc0000000018f0000-0xc000000001911dd0 data:0x800003ffec400000-0x800003ffec403468
+
+	/opt/tuxedo8.1-64/lib/libwsc.sl
+		text:0xc000000001940000-0xc0000000019ac1b0 data:0x800003ffe9400000-0x800003ffe9408428
+
+	/opt/tuxedo8.1-64/lib/libbuft.sl
+		text:0xc000000000066000-0xc00000000006713c data:0x800003ffe9c00000-0x800003ffe9c00920
+
+	/opt/tuxedo8.1-64/lib/libgpnet.sl
+		text:0xc000000000070000-0xc000000000090ad0 data:0x800003ffea000000-0x800003ffea001ab8
+
+	/opt/tuxedo8.1-64/lib/libfml.sl
+		text:0xc0000000000a0000-0xc0000000000bf0c4 data:0x800003ffea400000-0x800003ffea403ce0
+
+	/opt/tuxedo8.1-64/lib/libfml32.sl
+		text:0xc0000000000c0000-0xc0000000000e14ac data:0x800003ffeb000000-0x800003ffeb003e60
+
+	/opt/tuxedo8.1-64/lib/libgiconv.sl
+		text:0xc000000000410000-0xc00000000043883c data:0x800003ffea800000-0x800003ffea8c99c8
+
+	/opt/tuxedo8.1-64/lib/libengine.sl
+		text:0xc000000000280000-0xc000000000344dd4 data:0x800003ffeb400000-0x800003ffeb41cc18
+
+	/usr/lib/pa20_64/libnsl.1
+		text:0xc000000000440000-0xc0000000004bfb64 data:0x800003ffebc00000-0x800003ffebc11198
+
+	/usr/lib/pa20_64/libxti.2
+		text:0xc0000000004c0000-0xc0000000004d6e6c data:0x800003ffeb800000-0x800003ffeb802e30
+
+	/usr/lib/pa20_64/libnss_dns.1
+		text:0xc000000000348000-0xc00000000034da08 data:0x800003ffe8800000-0x800003ffe8801420
+
+	/usr/lib/pa20_64/libnss_nis.1
+		text:0xc000000000408000-0xc00000000040e1f8 data:0x800003ffe8400000-0x800003ffe8400bd8
+
+	/usr/lib/pa20_64/libnss_files.1
+		text:0xc000000000634000-0xc00000000063c6ac data:0x800003ffe8000000-0x800003ffe8000de8
+
+	/opt/tuxedo8.1-64/lib/registry.sl
+		text:0xc000000000640000-0xc000000000686100 data:0x800003ffe7800000-0x800003ffe7804f88
+
+
+	Heap at VM Abort:
+	Heap
+	 def new generation   total 5632K, used 641K [800003ffefc00000, 800003fff0210000, 800003fff1150000)
+	  eden space 5056K,  12% used [800003ffefc00000, 800003ffefca0478, 800003fff00f0000)
+	  from space 576K,   0% used [800003fff00f0000, 800003fff00f0000, 800003fff0180000)
+	  to   space 576K,   0% used [800003fff0180000, 800003fff0180000, 800003fff0210000)
+	 tenured generation   total 12480K, used 0K [800003fff1150000, 800003fff1d80000, 800003fff3c00000)
+	   the space 12480K,   0% used [800003fff1150000, 800003fff1150000, 800003fff1150200, 800003fff1d80000)
+	 compacting perm gen  total 16384K, used 2007K [800003fff3c00000, 800003fff4c00000, 800003fff7c00000)
+	   the space 16384K,  12% used [800003fff3c00000, 800003fff3df5f28, 800003fff3df6000, 800003fff4c00000)
+
+	Local Time = Wed Nov 24 21:55:25 2004
+	Elapsed Time = 187
+	#
+	# The exception above was detected in native code outside the VM
+	#
+	# Java VM: Java HotSpot(TM) 64-Bit Server VM (1.4.2 1.4.2.04-040628-21:46-PA_RISC2.0W PA2.0W (aCC_AP) mixed mode)
+	#

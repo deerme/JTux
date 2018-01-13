@@ -1,0 +1,55 @@
+# Copyright 2004 OTP Systems Oy. All rights reserved.
+
+ifdef IS_64_BIT_PLATFORM
+SHORT_PLATFORM  := hpux64
+else
+SHORT_PLATFORM  := hpux32
+endif
+
+DllCFlags	:= -b
+ObjSuffix	:= .o
+ExeSuffix	:= # empty
+LibPrefix	:= lib
+LibSuffix	:= .a
+DllPrefix	:= lib
+DllSuffix	:= .sl
+LocalHostName	:= $(shell hostname)
+CurrentDir	:= $(shell pwd)
+
+# aCC 11.11-3.56 generates warning 430 (Uninitialized variable) when using
+# va_list in combination with the -Ae compiler switch. Thie is a bug that
+# is fixed for HP-UX 11.23 in PHSS_30022 but, unfortunately, there is no
+# such patch for HP-UX 11.11. To allow our code to work around this but,
+# we define the ACC_VA_LIST_430_BUG macro.
+
+CC := aCC
+
+CFLAGS := -mt -Ae -DACC_VA_LIST_430_BUG
+
+ifdef IS_64_BIT_PLATFORM
+CFLAGS := $(CFLAGS) +Z +DA2.0W
+else
+CFLAGS := $(CFLAGS) +z +DA1.1
+endif
+
+# Compile arguments:
+#       $(1) Compile flags
+#       $(2) Source files
+
+Compile = $(CC) $(CFLAGS) -c $(1) $(2)
+
+# MakeLib arguments:
+#       $(1) Output file
+#       $(2) Input files
+
+MakeLib = ar -r -c $(1) $(2)
+
+# MakeExe arguments:
+#       $(1) Output file
+#       $(2) Compile flags
+#       $(3) Input files
+#       $(4) Link libraries
+
+MakeExe = $(CC) $(CFLAGS) -o $(1) $(2) $(3) $(4)
+
+MakeDll = TODO

@@ -1,0 +1,18 @@
+# Copyright 2004 OTP Systems Oy. All rights reserved.
+
+package jtux.holders;
+
+class ByteBufferHolder
+{
+    field value;
+}
+
+class IntHolder
+{
+    field value;
+}
+
+class StringHolder
+{
+    field value;
+}

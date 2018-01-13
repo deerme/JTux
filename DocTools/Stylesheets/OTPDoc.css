@@ -1,0 +1,110 @@
+/*
+ * Copyright 2004 OTP Systems Oy. All rights reserved.
+ */
+
+body
+{
+    margin: 0px;
+    padding: 0px;
+    font-family: Verdana, Arial, Helvetica, Sans-serif;
+    font-size: 75%;
+    line-height: 1.5;
+    width: 800px;
+}
+
+#Banner
+{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 760px;
+    height: 70px;
+    padding: 10px;
+    background-color: #3B82FF;
+}
+
+#Main
+{
+    position: absolute;
+    top: 90px;
+    left: 20px;
+    width: 750px;
+    padding: 10px;
+}
+
+p
+{
+    padding: 0px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+A
+{
+    text-decoration: none;
+}
+
+A:link, A:visited
+{
+    color: #0000DD;
+}
+
+A:hover
+{
+    text-decoration: underline;
+}
+
+h1
+{
+    margin: 0px;
+    padding-top: 0px;
+    padding-bottom: 18px;
+    font-size: 200%;
+    color: darkred;
+}
+
+h2
+{
+    font-size: 150%;
+    color: darkred;
+}
+
+h3
+{
+    font-size: 120%;
+    color: darkred;
+}
+
+h4
+{
+    font-size: 108%;
+    color: darkred;
+}
+
+li
+{
+    margin-top: 6pt;
+    margin-bottom: 6pt;
+}
+
+dt
+{
+    margin-top: 4pt;
+    margin-bottom: 8pt;
+}
+
+dd
+{
+    margin-top: 8pt;
+    margin-bottom: 12pt;
+}
+
+pre
+{
+    color: darkblue;
+    padding: 0px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 20px;
+    font-family: Courier New, Courier, Monospace;
+}

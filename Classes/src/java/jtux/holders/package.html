@@ -1,0 +1,22 @@
+<BODY>
+Provides classes for passing parameters by reference.
+
+@remarks
+The general approach for passing parameters by reference is illustrated
+by the following code fragment.
+<pre>
+import jtux.holders.IntHolder;
+
+void swap(IntHolder xRef, IntHolder yRef)
+{
+    int tmp = xRef.value;
+    xRef.value = yRef.value;
+    yRef.value = tmp;
+}
+    
+IntHolder aRef = new IntHolder(1);
+IntHolder bRef = new IntHolder(2);
+
+swap(aRef, bRef);
+</pre>
+</BODY>
